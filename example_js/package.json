@@ -1,0 +1,24 @@
+{
+  "name": "example_js",
+  "version": "1.0.0",
+  "description": "unit test js example",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Josfemova/CE4101-Investigacion1.git"
+  },
+  "keywords": [
+    "example",
+    "unit",
+    "test"
+  ],
+  "author": "José Morales Vargas, Alejandro Soto Chacón",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Josfemova/CE4101-Investigacion1/issues"
+  },
+  "homepage": "https://github.com/Josfemova/CE4101-Investigacion1#readme"
+}
