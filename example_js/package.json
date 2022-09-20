@@ -4,7 +4,7 @@
   "description": "unit test js example",
   "main": "app.js",
   "scripts": {
-    "test": "test"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/Josfemova/CE4101-Investigacion1/issues"
   },
-  "homepage": "https://github.com/Josfemova/CE4101-Investigacion1#readme"
+  "homepage": "https://github.com/Josfemova/CE4101-Investigacion1#readme",
+  "devDependencies": {
+    "jest": "^29.0.3"
+  }
 }
