@@ -647,6 +647,27 @@ funcional de una unidad de código.
 
 ## Conclusiones
 
+- Al programar utilizando pruebas unitarias, los programas son más confiables,
+  ya que su funcionalidad se verifica parcialmente como parte del proceso de
+  desarrollo.
+
+- El tiempo que toma implementar pruebas unitarias es menor que el tiempo que
+  toma determinar y depurar errores a posterior. Esto es particularmente cierto
+  si se utiliza desarrollo guiado por pruebas.
+
+- Las pruebas unitarias hacen que modificar o refactorizar el código sea una
+  operación relativamente segura, ya que una covertura amplia podría detectar
+  efectos secundarios no deseados en los cambios realizados.
+
+- Las pruebas unitarias permiten probar secciones de código individualmente y
+  permiten encontrar errores en módulos individuales de código,
+  independientemente de si otras partes se prueban o no.
+
+- La modularidad del modelo de pruebas unitarias facilita la reutilización de
+  código, ya que se pueden separar partes del código con sus respectivas
+  pruebas individuales. Para objetivos de prueba y métricas de calidad de más
+  alto nivel en el sistema existen por aparte las pruebsa de integración.
+
 ## Bibliografía
 
 ::: {#refs}
