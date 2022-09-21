@@ -103,11 +103,281 @@ problemas son mencionados por [@geeks-for-geeks] y [@agile-alliance-tdd]:
 
 ## Ejemplo framework para pruebas unitarias en Java
 
+Existen varias herrramientas para realizar pruebas en Java. Entre
+ellas se encuentran:
+
+ - JBehave: diseñada para desarrollo guiado por comportamiento.
+ - Serenity: permite trabajar con otros frameworks de pruebas.
+ - TestNG: está especializado en pruebas unitarias.
+ - Muchas otras, incluyendo Selenide, Gauge, Geb, Spock, etc.
+
+Posiblemente el framework más popular para realizar pruebas unitarias en Java
+es JUnit. Esta biblioteca permite automatizar la ejecución de pruebas y
+realizar desarrollo guiado por pruebas (TDD).
+
+Algunas de las características de JUnit son:
+ - Software libre y de código abierto bajo licencia MIT
+ - Pruebas por medio de aserciones
+ - Ejecución automática de pruebas
+ - Organización y agrupación de pruebas individuales en test suites
+
 ### Funcionalidades
+
+Las principales funcionalidades para realizar pruebas en JUnit las provee
+clases que incluye:
+
+ - `Assert`: contiene métodos para realizar aserciones, incluyendo:
+  - `void assertEquals(boolean expected, boolean actual)`: afirma que dos valores sean iguales.
+  - `void assertNotNull(Object object)`: afirma que cierto valor no es nulo.
+  - `void assertNull(Object object)`: afirma que cierto valor es nulo.
+  - `void assertTrue(boolean condition)`: afirma que cierta condición es verdadera.
+  - `void assertFalse(boolean condition)`: afirma que cierta condición es falsa.
+
+El principal mecanismo para realizar pruebas unitarias en JUnit es la clase
+`Assert`. Al igual que en la mayoría de frameworks de pruebas unitarias, la
+forma en la que se realiza una prueba es ejecutando alguna función que se desee
+probar con cierta entrada, capturando su resultado, y comparándo ese resultado
+con un valor que es correcto y esperado, dada la entrada que se utilizó. La
+forma en la que se realiza esta comparación entre el resultado obtenido de una
+función y un valor esperado es utilizando las funciones de aserción.
 
 ### Tipos de pruebas
 
+Se pueden clasificar los componentes de una prueba en varias categorías,
+listadas a continuación. JUnit está principalmente destinado a pruebas
+unitarias y de integración.
+
+#### Fixtures
+
+Una *fixture* es un estado fijo que produce una base para ejecutar pruebas. El
+propósito de esta clase es asegurar un ambiente conocido antes de ejecutar
+pruebas, es decir, un tipo de ambiente conocido sobre el que se desean realizar
+aserciones.
+
+Esto se logra principalmente a través del método `setUp()`, el cual se ejecuta
+antes de cada prueba. Además, existe el método `tearDown()`, que se ejecuta al
+final de cada prueba y destruye el entorno de fixture.
+
+#### Test suites
+Una *test suite* agrupa cierta cantidad de pruebas unitarias y las ejecuta
+juntas. Esto permite ejecutar pruebas por grupo, en lugar de individualmente.
+Para esto, existen las anotaciones `@RunWith` y `@Suite`.
+
+#### Test runner
+Un *test runner* se utiliza como punto de entrada para ejecutar las pruebas. Es
+una característica de extensibilidad.
+
 ### Ejemplo de uso
+
+Para utilizar JUnit se siguen los siguientes pasos:
+1. Se prepara el entorno de desarrollo. Es necesario JDK 1.5 o superior.
+2. Se instalar JUnit, que está disponible en [@junit-gh] y varias distribuciones de software.
+3. Se escribe una prueba (`TestJunit.java`):
+```Java
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+
+public class TestJunit
+{
+   @Test
+   public void pruebaBasica()
+   {
+      String str = "Prueba inicial";
+      assertEquals("Prueba inicial", str);
+   }
+}
+```
+4. Se escribe un corredor (*test runner*) para la prueba (`TestRunner.java`):
+```Java
+import org.junit.runner.notification.Failure;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+
+public class TestRunner
+{
+   public static void main(String[] args)
+   {
+      Result result = JUnitCore.runClasses(TestJunit.class);
+      for(Failure failure : result.getFailures())
+      {
+         System.err.println(failure.toString());
+      }
+
+      System.out.println(result.wasSuccessful());
+   }
+}  
+```
+5. Se compilar y ejecuta la prueba, revisando posteriormente el reporte:
+```Bash
+$ javac TestJunit.java TestRunner.java
+$ java TestRunner
+true
+```
+
+Como se observa, hay un archivo en el que se define la prueba
+(`TestJunit.java`) y otro archivo que ejecuta la prueba y funciona como punto
+de entrada (`TestRunner.java`).
+
+En el archivo de definición, `TestJunit.java`, se importan los paquetes
+necesarios para realizar pruebas, se define una clase de pruebas y se declara
+una función de prueba, utilizando la anotación `@Test`. En `TestJRunner.java`
+se realizan las importaciones necesarias, se define una clase para correr las
+pruebas, se declara una variable que contiene el resultado de las pruebas y,
+para cada una de las pruebas, se imprime cada una de las pruebas que tuvo algún
+error. Finalmente, se imprime si el resultado de las pruebas fue exitoso.
+
+Se incluye un ejemplo más desarrollado a continuación (tomado de
+[@junit-example]). `EmployeeDetails` es una clase que define la información de
+un empleado de cierta empresa, incluyendo su nombre, edad y salario.
+
+```Java
+public class EmployeeDetails {
+
+   private String name;
+   private double monthlySalary;
+   private int age;
+   
+   /**
+   * @return the name
+   */
+	
+   public String getName() {
+      return name;
+   }
+	
+   /**
+   * @param name the name to set
+   */
+	
+   public void setName(String name) {
+      this.name = name;
+   }
+	
+   /**
+   * @return the monthlySalary
+   */
+	
+   public double getMonthlySalary() {
+      return monthlySalary;
+   }
+	
+   /**
+   * @param monthlySalary the monthlySalary to set
+   */
+	
+   public void setMonthlySalary(double monthlySalary) {
+      this.monthlySalary = monthlySalary;
+   }
+	
+   /**
+   * @return the age
+   */
+   public int getAge() {
+      return age;
+   }
+	
+   /**
+   * @param age the age to set
+   */
+   public void setAge(int age) {
+      this.age = age;
+   }
+}
+```
+
+`EmpBusinessLogic` es una clase que utiliza a `EmployeeDetails` ior para
+calcular el salario de un empleado y también su aumento anual:
+```Java
+public class EmpBusinessLogic {
+   // Calculate the yearly salary of employee
+   public double calculateYearlySalary(EmployeeDetails employeeDetails) {
+      double yearlySalary = 0;
+      yearlySalary = employeeDetails.getMonthlySalary() * 12;
+      return yearlySalary;
+   }
+	
+   // Calculate the appraisal amount of employee
+   public double calculateAppraisal(EmployeeDetails employeeDetails) {
+      double appraisal = 0;
+		
+      if(employeeDetails.getMonthlySalary() < 10000){
+         appraisal = 500;
+      }else{
+         appraisal = 1000;
+      }
+		
+      return appraisal;
+   }
+}
+```
+
+Finalmente, `TestEmployeeDetails` prueba el funcionamiento correcto de las dos
+clases anteriores por medio de una prueba unitaria de JUnit.
+```Java
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+
+public class TestEmployeeDetails {
+   EmpBusinessLogic empBusinessLogic = new EmpBusinessLogic();
+   EmployeeDetails employee = new EmployeeDetails();
+
+   //test to check appraisal
+   @Test
+   public void testCalculateAppriasal() {
+      employee.setName("Rajeev");
+      employee.setAge(25);
+      employee.setMonthlySalary(8000);
+		
+      double appraisal = empBusinessLogic.calculateAppraisal(employee);
+      assertEquals(500, appraisal, 0.0);
+   }
+
+   // test to check yearly salary
+   @Test
+   public void testCalculateYearlySalary() {
+      employee.setName("Rajeev");
+      employee.setAge(25);
+      employee.setMonthlySalary(8000);
+		
+      double salary = empBusinessLogic.calculateYearlySalary(employee);
+      assertEquals(96000, salary, 0.0);
+   }
+}
+```
+
+`TestRunner` es el punto de entrada y ejecuta la prueba:
+
+```Java
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+
+public class TestRunner {
+   public static void main(String[] args) {
+      Result result = JUnitCore.runClasses(TestEmployeeDetails.class);
+		
+      for (Failure failure : result.getFailures()) {
+         System.out.println(failure.toString());
+      }
+		
+      System.out.println(result.wasSuccessful());
+   }
+} 
+```
+
+Habría sido posible escribir la prueba y el runner primero si se deseara un
+desarrollo dirigido por pruebas, situación en que software se escribe con tal
+de satisfacer pruebas unitarias existentes. Se compila, ejecuta y se observa
+la salida:
+
+```Bash
+$ javac EmployeeDetails.java EmpBusinessLogic.java TestEmployeeDetails.java TestRunner.java
+$ java TestRunner
+true
+```
+
+Se comprueba entonces que el sistema funciona según lo especificado en las
+pruebas unitarias.
 
 ## Ejemplo framework para pruebas unitarias en JavaScript
 
